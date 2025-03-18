@@ -1,0 +1,42 @@
+<?php
+session_start();
+
+include("database.php");
+include("functions.php");
+
+$user_data = check_login($myconnection);
+$student_data = get_student($myconnection);
+$student_id = get_student_info($myconnection, 'student_id');
+$student_email = get_student_info($myconnection, 'email');
+$student_dept_name = get_student_info($myconnection, 'dept_name');
+$student_credits = get_undergrad_info($myconnection, $student_id, 'total_credits');
+$student_class_standing = get_undergrad_info($myconnection, $student_id, 'class_standing');
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Undergraduate Home Page</title>
+    <body>
+        
+        <h1>Hello, <?php echo $student_data['name']; ?></h1><br>
+        <h2>Your Information:</h2>
+            <li><strong>Name:</strong> <?php echo $student_data['name']; ?></li>
+            <li><strong>Student ID:</strong> <?php echo htmlspecialchars($student_id); ?></li>
+            <li><strong>Student Email:</strong> <?php echo htmlspecialchars($student_email); ?></li>
+            <li><strong>Department:</strong> <?php echo htmlspecialchars($student_dept_name); ?></li>
+            <li><strong>Class Standing:</strong> <?php echo htmlspecialchars($student_class_standing); ?></li>
+            <li><strong>Total Credits:</strong> <?php echo htmlspecialchars($student_credits); ?></li><br>
+
+            <form action="edit_undergraduate_information.php" method="get">
+            <input type="submit" value="Edit Information"> </form><br>
+            
+            <form action="student_course_list.php" method="get">
+            <input type="submit" value="View My Courses"> </form><br>
+
+            <form action="browse_courses.php" method="get">
+            <input type="submit" value="Browse Course Offerings"> </form><br>
+
+            <a href="logout.php">Logout</a>
+    </body>
+</html>
